@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 
 class Overview extends Component {
   constructor(props) {
-    super(props)
-
-    this.state = { };
+    super(props);
   }
 
   render() {
@@ -12,8 +10,11 @@ class Overview extends Component {
 
     return (
       <div>
-        <p>Overview</p>
-        <p>{tasks.join(', ')}</p>
+        <ul>
+          {tasks.map(task => {
+            return <li key={task.id}>{task.text}</li>
+          })}
+        </ul>
       </div>
     );
   }
