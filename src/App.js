@@ -11,12 +11,14 @@ class App extends Component {
       task: {
         text: '',
         id: uniqid(),
+        order: 1,
       },
       tasks: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.formSubmit = this.formSubmit.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
   }
 
   handleChange(evt) {
@@ -26,6 +28,7 @@ class App extends Component {
       task: {
         text: newText,
         id: this.state.task.id,
+        order: this.state.tasks.length + 1,
       },
     });
   }
@@ -37,7 +40,16 @@ class App extends Component {
       task: {
         text: '',
         id: uniqid(),
+        order: this.state.tasks.length + 1,
       },
+    });
+  }
+
+  deleteTask(evt, taskId) {
+    this.setState({
+      tasks: this.state.tasks.filter(task => {
+        return task.id !== taskId;
+      })
     });
   }
 
@@ -48,7 +60,7 @@ class App extends Component {
       <div>
         <form onSubmit={this.formSubmit}>
           <label htmlFor="taskInput">Enter Task: </label>
-          <input 
+          <input
             type="text"
             name="taskInput"
             onChange={this.handleChange}
@@ -56,7 +68,7 @@ class App extends Component {
           />
           <button type="submit">Add Task</button>
         </form>
-        <Overview tasks={tasks}/>
+        <Overview tasks={tasks} deleteTask={this.deleteTask} />
       </div>
     );
   }

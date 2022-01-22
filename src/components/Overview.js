@@ -6,13 +6,17 @@ class Overview extends Component {
   }
 
   render() {
-    const { tasks } = this.props;
+    const { tasks, deleteTask } = this.props;
 
     return (
       <div>
         <ul>
           {tasks.map(task => {
-            return <li key={task.id}>{task.text}</li>
+            return (
+              <li key={task.id}>
+                <button onClick={(evt) => deleteTask(evt, task.id)}>Delete</button> {task.order}) {task.text}
+              </li>
+            )
           })}
         </ul>
       </div>
