@@ -14,7 +14,7 @@ class Overview extends Component {
           {tasks.map(task => {
             return (
               <li key={task.id}>
-                <button onClick={(evt) => deleteTask(evt, task.id)}>Delete</button> {task.order}) {task.text}
+                <button onClick={(evt) => deleteTask(task.id)}>Delete</button> {task.order}) {task.text}
               </li>
             )
           })}

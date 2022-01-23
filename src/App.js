@@ -45,11 +45,24 @@ class App extends Component {
     });
   }
 
-  deleteTask(evt, taskId) {
+  deleteTask(taskId) {
+    // The callback form of setState() is used in the 2nd function
+    // because async causes the same state to be passed to both setState() functions
     this.setState({
       tasks: this.state.tasks.filter(task => {
         return task.id !== taskId;
       })
+    });
+    this.setState((state) => {
+      return {
+        tasks: state.tasks.map((task, index) => {
+          return {
+            text: task.text,
+            id: task.id,
+            order: index + 1,
+          }
+        })
+      };
     });
   }
 
