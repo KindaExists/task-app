@@ -6,17 +6,32 @@ class Overview extends Component {
   }
 
   render() {
-    const { tasks, deleteTask } = this.props;
+    const { tasks, deleteTask, enableEditTask, disableEditTask, handleEditChange } = this.props;
 
     return (
       <div>
         <ul>
           {tasks.map(task => {
-            return (
-              <li key={task.id}>
-                <button onClick={(evt) => deleteTask(task.id)}>Delete</button> {task.order}) {task.text}
-              </li>
-            )
+            if(task.editEnabled) {
+              return (
+                <li key={task.id}>
+                  ({task.order}) <button onClick={() => deleteTask(task.id)}>Delete</button>
+                  <button onClick={() => disableEditTask(task.id)}>Save</button> <input
+                    type="text"
+                    name="taskInput"
+                    onChange={(evt) => handleEditChange(evt, task.id)}
+                    value={task.text}
+                  />
+                </li>
+              );
+            } else {
+              return (
+                <li key={task.id}>
+                  ({task.order}) <button onClick={() => deleteTask(task.id)}>Delete</button>
+                  <button onClick={() => enableEditTask(task.id)}>Edit</button> {task.text}
+                </li>
+              );
+            }
           })}
         </ul>
       </div>

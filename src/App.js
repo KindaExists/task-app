@@ -12,6 +12,7 @@ class App extends Component {
         text: '',
         id: uniqid(),
         order: 1,
+        editEnabled: false,
       },
       tasks: [],
     };
@@ -19,6 +20,9 @@ class App extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.formSubmit = this.formSubmit.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
+    this.enableEditTask = this.enableEditTask.bind(this);
+    this.disableEditTask = this.disableEditTask.bind(this);
+    this.handleEditChange = this.handleEditChange.bind(this);
   }
 
   handleChange(evt) {
@@ -29,6 +33,7 @@ class App extends Component {
         text: newText,
         id: this.state.task.id,
         order: this.state.tasks.length + 1,
+        editEnabled: this.state.editEnabled,
       },
     });
   }
@@ -41,6 +46,7 @@ class App extends Component {
         text: '',
         id: uniqid(),
         order: this.state.tasks.length + 1,
+        editEnabled: this.state.editEnabled,
       },
     });
   }
@@ -60,9 +66,64 @@ class App extends Component {
             text: task.text,
             id: task.id,
             order: index + 1,
+            editEnabled: this.state.editEnabled,
           }
         })
       };
+    });
+  }
+
+
+  enableEditTask(taskId) {
+    this.setState({
+      tasks: this.state.tasks.map(task => {
+        if(task.id === taskId) {
+          return {
+            text: task.text,
+            id: task.id,
+            order: task.order,
+            editEnabled: true,
+          };
+        } else {
+          return task;
+        }
+      })
+    });
+  }
+
+  disableEditTask(taskId) {
+    this.setState({
+      tasks: this.state.tasks.map(task => {
+        if(task.id === taskId) {
+          return {
+            text: task.text,
+            id: task.id,
+            order: task.order,
+            editEnabled: false,
+          };
+        } else {
+          return task;
+        }
+      })
+    });
+  }
+
+  handleEditChange(evt, taskId) {
+    const target = evt.target;
+    const newText = target.value;
+    this.setState({
+      tasks: this.state.tasks.map(task => {
+        if(task.id === taskId) {
+          return {
+            text: newText,
+            id: task.id,
+            order: task.order,
+            editEnabled: task.editEnabled,
+          };
+        } else {
+          return task;
+        }
+      })
     });
   }
 
@@ -81,7 +142,13 @@ class App extends Component {
           />
           <button type="submit">Add Task</button>
         </form>
-        <Overview tasks={tasks} deleteTask={this.deleteTask} />
+        <Overview 
+          tasks={tasks}
+          deleteTask={this.deleteTask}
+          enableEditTask={this.enableEditTask}
+          disableEditTask={this.disableEditTask}
+          handleEditChange={this.handleEditChange}
+        />
       </div>
     );
   }
